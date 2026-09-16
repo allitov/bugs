@@ -101,7 +101,6 @@ class MainActivity : AppCompatActivity() {
         if (img != 0) ivZodiac.setImageResource(img)
     }
 
-    /** Знак зодиака по дню и месяцу (месяц 1..12) */
     private fun zodiacSign(day: Int, month: Int): String = when (month) {
         1  -> if (day <= 19) "Козерог" else "Водолей"
         2  -> if (day <= 18) "Водолей" else "Рыбы"
