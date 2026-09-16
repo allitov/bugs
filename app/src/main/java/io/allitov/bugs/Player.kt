@@ -6,7 +6,7 @@ data class Player(
     val course: Int,
     val difficulty: String,
     val birthDate: String,
-    val zodiacSign: String
+    val zodiacSign: ZodiacSign
 ) {
     override fun toString(): String = """
         ФИО: $fullName
@@ -14,6 +14,6 @@ data class Player(
         Курс: $course
         Уровень сложности: $difficulty
         Дата рождения: $birthDate
-        Знак зодиака: $zodiacSign
+        Знак зодиака: ${zodiacSign.title}
     """.trimIndent()
 }

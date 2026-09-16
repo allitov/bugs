@@ -92,44 +92,11 @@ class MainActivity : AppCompatActivity() {
         val course = spCourse.selectedItemPosition + 1
         val difficulty = difficulties[sbDifficulty.progress]
         val birthDate = "%02d.%02d.%04d".format(birthDay, birthMonth + 1, birthYear)
-        val zodiac = zodiacSign(birthDay, birthMonth + 1)
+        val zodiac = ZodiacSign.from(birthDay, birthMonth + 1)
 
         val player = Player(fullName, gender, course, difficulty, birthDate, zodiac)
 
         tvResult.text = player.toString()
-        val img = zodiacImage(zodiac)
-        if (img != 0) ivZodiac.setImageResource(img)
-    }
-
-    private fun zodiacSign(day: Int, month: Int): String = when (month) {
-        1  -> if (day <= 19) "Козерог" else "Водолей"
-        2  -> if (day <= 18) "Водолей" else "Рыбы"
-        3  -> if (day <= 20) "Рыбы" else "Овен"
-        4  -> if (day <= 19) "Овен" else "Телец"
-        5  -> if (day <= 20) "Телец" else "Близнецы"
-        6  -> if (day <= 20) "Близнецы" else "Рак"
-        7  -> if (day <= 22) "Рак" else "Лев"
-        8  -> if (day <= 22) "Лев" else "Дева"
-        9  -> if (day <= 22) "Дева" else "Весы"
-        10 -> if (day <= 22) "Весы" else "Скорпион"
-        11 -> if (day <= 21) "Скорпион" else "Стрелец"
-        12 -> if (day <= 21) "Стрелец" else "Козерог"
-        else -> ""
-    }
-
-    private fun zodiacImage(sign: String): Int = when (sign) {
-        "Овен"     -> R.drawable.zodiac_aries
-        "Телец"    -> R.drawable.zodiac_taurus
-        "Близнецы" -> R.drawable.zodiac_gemini
-        "Рак"      -> R.drawable.zodiac_cancer
-        "Лев"      -> R.drawable.zodiac_leo
-        "Дева"     -> R.drawable.zodiac_virgo
-        "Весы"     -> R.drawable.zodiac_libra
-        "Скорпион" -> R.drawable.zodiac_scorpio
-        "Стрелец"  -> R.drawable.zodiac_sagittarius
-        "Козерог"  -> R.drawable.zodiac_capricorn
-        "Водолей"  -> R.drawable.zodiac_aquarius
-        "Рыбы"     -> R.drawable.zodiac_pisces
-        else -> 0
+        ivZodiac.setImageResource(zodiac.imageRes)
     }
 }
