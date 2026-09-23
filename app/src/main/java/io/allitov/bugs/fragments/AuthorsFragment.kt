@@ -11,6 +11,7 @@ import android.widget.ListView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import io.allitov.bugs.R
+import io.allitov.bugs.model.Author
 
 class AuthorsFragment : Fragment() {
 
@@ -29,8 +30,6 @@ class AuthorsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<ListView>(R.id.lvAuthors).adapter = AuthorAdapter(requireContext())
     }
-
-    private data class Author(val name: String, val photoRes: Int)
 
     private inner class AuthorAdapter(context: Context) :
         ArrayAdapter<Author>(context, 0, authors) {
