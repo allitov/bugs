@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import io.allitov.bugs.fragments.AuthorsFragment
 import io.allitov.bugs.fragments.GameRulesFragment
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val viewPager = findViewById<ViewPager2>(R.id.vpPages)
-        val tabLayout = findViewById<com.google.android.material.tabs.TabLayout>(R.id.tabLayout)
+        val tabLayout = findViewById<TabLayout>(R.id.tabLayout)
 
         viewPager.isUserInputEnabled = true
         viewPager.offscreenPageLimit = tabs.size - 1

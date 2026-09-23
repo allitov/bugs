@@ -1,4 +1,4 @@
-package io.allitov.bugs
+package io.allitov.bugs.model
 
 data class GameSettings(
     val speed: Float = 1.0f,

@@ -15,9 +15,9 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import io.allitov.bugs.Player
+import io.allitov.bugs.model.Player
 import io.allitov.bugs.R
-import io.allitov.bugs.ZodiacSign
+import io.allitov.bugs.model.ZodiacSign
 import java.util.Calendar
 
 class PlayerRegistrationFragment : Fragment() {

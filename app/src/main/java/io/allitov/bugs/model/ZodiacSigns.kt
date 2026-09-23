@@ -1,6 +1,7 @@
-package io.allitov.bugs
+package io.allitov.bugs.model
 
 import androidx.annotation.DrawableRes
+import io.allitov.bugs.R
 
 enum class ZodiacSign(
     val title: String,

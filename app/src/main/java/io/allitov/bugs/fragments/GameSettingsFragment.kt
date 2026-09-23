@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import io.allitov.bugs.GameSettings
-import io.allitov.bugs.GameSettingsStore
+import io.allitov.bugs.model.GameSettings
+import io.allitov.bugs.model.GameSettingsStore
 import io.allitov.bugs.R
 
 class GameSettingsFragment : Fragment() {
