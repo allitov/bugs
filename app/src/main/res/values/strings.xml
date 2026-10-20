@@ -2,4 +2,10 @@
     <string name="app_name">Bugs</string>
     <string name="seconds_value">%1$d сек</string>
     <string name="minutes_seconds_value">%1$d мин %2$d сек</string>
+
+    <!-- Игровой экран -->
+    <string name="score_value">Очки: %1$d</string>
+    <string name="time_left_value">Осталось: %1$d сек</string>
+    <string name="default_score">Очки: 0</string>
+    <string name="default_time_left">Осталось: –</string>
 </resources>
