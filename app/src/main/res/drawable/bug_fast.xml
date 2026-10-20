@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Быстрый жук: маленький, стройный и юркий зелёный жук -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+
+    <!-- Лапки -->
+    <path
+        android:strokeColor="#33691E"
+        android:strokeWidth="6"
+        android:strokeLineCap="round"
+        android:pathData="M62,82 L22,54 M54,118 L14,102 M60,152 L30,180 M138,82 L178,54 M146,118 L186,102 M140,152 L170,180" />
+    <!-- Усики -->
+    <path
+        android:strokeColor="#33691E"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:pathData="M90,36 C84,20 72,10 56,12 M110,36 C116,20 128,10 144,12" />
+    <!-- Голова -->
+    <path
+        android:fillColor="#558B2F"
+        android:pathData="M80,48 a20,22 0 1 0 40,0 a20,22 0 1 0 -40,0 z" />
+    <!-- Глаза -->
+    <path
+        android:fillColor="#F1F8E9"
+        android:pathData="M88,42 a3.5,3.5 0 1 0 7,0 a3.5,3.5 0 1 0 -7,0 z M105,42 a3.5,3.5 0 1 0 7,0 a3.5,3.5 0 1 0 -7,0 z" />
+    <!-- Тело -->
+    <path
+        android:fillColor="#7CB342"
+        android:pathData="M60,122 a40,66 0 1 0 80,0 a40,66 0 1 0 -80,0 z" />
+    <!-- Линия крыльев -->
+    <path
+        android:strokeColor="#558B2F"
+        android:strokeWidth="4"
+        android:pathData="M100,58 L100,188" />
+    <!-- Полоски скорости -->
+    <path
+        android:strokeColor="#558B2F"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:pathData="M70,96 L92,88 M66,128 L92,120 M70,160 L92,152 M130,96 L108,88 M134,128 L108,120 M130,160 L108,152" />
+</vector>
