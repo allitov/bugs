@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Редкий жук: золотой жук-бонус, появляется изредка и дорог в очках -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+
+    <!-- Лапки -->
+    <path
+        android:strokeColor="#B8860B"
+        android:strokeWidth="7"
+        android:strokeLineCap="round"
+        android:pathData="M52,86 L16,64 M46,116 L10,114 M54,146 L26,172 M148,86 L184,64 M154,116 L190,114 M146,146 L174,172" />
+    <!-- Усики -->
+    <path
+        android:strokeColor="#B8860B"
+        android:strokeWidth="6"
+        android:strokeLineCap="round"
+        android:pathData="M88,32 C78,18 62,10 46,14 M112,32 C122,18 138,10 154,14" />
+    <!-- Голова -->
+    <path
+        android:fillColor="#FF8F00"
+        android:pathData="M77,50 a23,23 0 1 0 46,0 a23,23 0 1 0 -46,0 z" />
+    <!-- Глаза -->
+    <path
+        android:fillColor="#FFFDE7"
+        android:pathData="M86,44 a4,4 0 1 0 8,0 a4,4 0 1 0 -8,0 z M106,44 a4,4 0 1 0 8,0 a4,4 0 1 0 -8,0 z" />
+    <!-- Тело -->
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M44,122 a56,58 0 1 0 112,0 a56,58 0 1 0 -112,0 z" />
+    <!-- Линия крыльев -->
+    <path
+        android:strokeColor="#FF8F00"
+        android:strokeWidth="4"
+        android:pathData="M100,66 L100,180" />
+    <!-- Пятна -->
+    <path
+        android:fillColor="#795548"
+        android:pathData="M64,98 a10,10 0 1 0 20,0 a10,10 0 1 0 -20,0 z M116,98 a10,10 0 1 0 20,0 a10,10 0 1 0 -20,0 z M56,140 a8,8 0 1 0 16,0 a8,8 0 1 0 -16,0 z M128,140 a8,8 0 1 0 16,0 a8,8 0 1 0 -16,0 z M92,164 a8,8 0 1 0 16,0 a8,8 0 1 0 -16,0 z" />
+    <!-- Блик -->
+    <path
+        android:fillColor="#FFE082"
+        android:pathData="M52,92 a10,10 0 1 0 20,0 a10,10 0 1 0 -20,0 z" />
+    <!-- Звёздочка -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.9"
+        android:pathData="M158,30 L164,46 L180,52 L164,58 L158,74 L152,58 L136,52 L152,46 Z" />
+</vector>

@@ -34,13 +34,13 @@ class GameSettingsFragment : Fragment() {
             speedText.text = formatSpeed(gameSettings.speed)
         })
 
-        val maxCockroachesSeekBar = view.findViewById<SeekBar>(R.id.sbMaxCockroaches)
-        val maxCockroachesText = view.findViewById<TextView>(R.id.tvMaxCockroaches)
-        maxCockroachesSeekBar.progress = gameSettings.maxCockroaches - 5
-        maxCockroachesText.text = gameSettings.maxCockroaches.toString()
-        maxCockroachesSeekBar.setOnSeekBarChangeListener(simpleSeekBarListener { progress ->
-            updateSettings { it.copy(maxCockroaches = progress + 5) }
-            maxCockroachesText.text = gameSettings.maxCockroaches.toString()
+        val maxBugsSeekBar = view.findViewById<SeekBar>(R.id.sbMaxBugs)
+        val maxBugsText = view.findViewById<TextView>(R.id.tvMaxBugs)
+        maxBugsSeekBar.progress = gameSettings.maxBugs - 5
+        maxBugsText.text = gameSettings.maxBugs.toString()
+        maxBugsSeekBar.setOnSeekBarChangeListener(simpleSeekBarListener { progress ->
+            updateSettings { it.copy(maxBugs = progress + 5) }
+            maxBugsText.text = gameSettings.maxBugs.toString()
         })
 
         val bonusIntervalSeekBar = view.findViewById<SeekBar>(R.id.sbBonusInterval)
@@ -54,10 +54,10 @@ class GameSettingsFragment : Fragment() {
 
         val roundDurationSeekBar = view.findViewById<SeekBar>(R.id.sbRoundDuration)
         val roundDurationText = view.findViewById<TextView>(R.id.tvRoundDuration)
-        roundDurationSeekBar.progress = gameSettings.roundDurationSeconds - 30
+        roundDurationSeekBar.progress = gameSettings.roundDurationSeconds / ROUND_DURATION_STEP - 1
         roundDurationText.text = formatDuration(gameSettings.roundDurationSeconds)
         roundDurationSeekBar.setOnSeekBarChangeListener(simpleSeekBarListener { progress ->
-            updateSettings { it.copy(roundDurationSeconds = progress + 30) }
+            updateSettings { it.copy(roundDurationSeconds = progress * ROUND_DURATION_STEP + ROUND_DURATION_STEP) }
             roundDurationText.text = formatDuration(gameSettings.roundDurationSeconds)
         })
     }
@@ -87,5 +87,9 @@ class GameSettingsFragment : Fragment() {
         } else {
             getString(R.string.minutes_seconds_value, minutes, remainingSeconds)
         }
+    }
+
+    private companion object {
+        const val ROUND_DURATION_STEP = 15
     }
 }
