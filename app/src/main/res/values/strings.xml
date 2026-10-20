@@ -3,9 +3,29 @@
     <string name="seconds_value">%1$d сек</string>
     <string name="minutes_seconds_value">%1$d мин %2$d сек</string>
 
+    <!-- Главное меню -->
+    <string name="game_title">Жуки</string>
+    <string name="menu_subtitle">Дави жуков и набирай очки!</string>
+    <string name="menu_play">Начать игру</string>
+    <string name="menu_rules">Правила</string>
+    <string name="menu_authors">Авторы</string>
+    <string name="menu_settings">Настройки</string>
+
     <!-- Игровой экран -->
     <string name="score_value">Очки: %1$d</string>
     <string name="time_left_value">Осталось: %1$d сек</string>
     <string name="default_score">Очки: 0</string>
     <string name="default_time_left">Осталось: –</string>
+
+    <!-- Итоги раунда -->
+    <string name="results_title">Раунд завершён!</string>
+    <string name="results_score">Очки: %1$d</string>
+    <string name="results_hits">Попадания: %1$d</string>
+    <string name="results_misses">Промахи: %1$d</string>
+    <string name="results_accuracy">Точность: %1$d%%</string>
+    <string name="results_hits_default">Попадания: 0</string>
+    <string name="results_misses_default">Промахи: 0</string>
+    <string name="results_accuracy_default">Точность: 0%</string>
+    <string name="results_replay">Играть снова</string>
+    <string name="results_to_menu">В меню</string>
 </resources>

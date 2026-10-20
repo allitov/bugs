@@ -35,9 +35,18 @@ class MainActivity : AppCompatActivity() {
                 else -> GameSettingsFragment()
             }
         }
+        viewPager.setCurrentItem(intent.getIntExtra(EXTRA_SELECTED_PAGE, PAGE_PLAYER), false)
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabs[position]
         }.attach()
+    }
+
+    companion object {
+        const val EXTRA_SELECTED_PAGE = "io.allitov.bugs.extra.SELECTED_PAGE"
+        const val PAGE_PLAYER = 0
+        const val PAGE_RULES = 1
+        const val PAGE_AUTHORS = 2
+        const val PAGE_SETTINGS = 3
     }
 }

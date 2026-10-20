@@ -12,17 +12,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Bugs">
         <activity
-            android:name=".MainActivity"
+            android:name=".GameMenuActivity"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Bugs"
-            android:windowSoftInputMode="adjustResize">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".GameActivity"
+            android:exported="false"
+            android:label="@string/game_title" />
+        <activity
+            android:name=".GameResultsActivity"
+            android:exported="false"
+            android:label="@string/results_title" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>
