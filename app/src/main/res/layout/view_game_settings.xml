@@ -32,18 +32,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Максимальное количество тараканов"
+            android:text="Максимальное количество жуков"
             android:textSize="17sp"
             android:textStyle="bold" />
 
         <SeekBar
-            android:id="@+id/sbMaxCockroaches"
+            android:id="@+id/sbMaxBugs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:max="45" />
 
         <TextView
-            android:id="@+id/tvMaxCockroaches"
+            android:id="@+id/tvMaxBugs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="20" />
@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Интервал появления бонусов"
+            android:text="Интервал появления редких жуков"
             android:textSize="17sp"
             android:textStyle="bold" />
 
@@ -80,7 +80,7 @@
             android:id="@+id/sbRoundDuration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:max="270" />
+            android:max="7" />
 
         <TextView
             android:id="@+id/tvRoundDuration"
