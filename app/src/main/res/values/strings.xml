@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Bugs</string>
+    <string name="seconds_value">%1$d сек</string>
+    <string name="minutes_seconds_value">%1$d мин %2$d сек</string>
 </resources>
