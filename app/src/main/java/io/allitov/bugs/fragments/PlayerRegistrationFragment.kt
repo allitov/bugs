@@ -10,31 +10,37 @@ import android.widget.CalendarView
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.RadioGroup
-import android.widget.SeekBar
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import io.allitov.bugs.model.Player
+import androidx.lifecycle.lifecycleScope
 import io.allitov.bugs.R
+import io.allitov.bugs.data.AppDatabase
+import io.allitov.bugs.data.PlayerEntity
+import io.allitov.bugs.data.PlayerSession
+import io.allitov.bugs.model.GameSettingsStore
+import io.allitov.bugs.model.Player
 import io.allitov.bugs.model.ZodiacSign
+import kotlinx.coroutines.launch
 import java.util.Calendar
 
+/** Вкладка «Игрок»: регистрация новых игроков с сохранением в базу. */
 class PlayerRegistrationFragment : Fragment() {
 
     private lateinit var etFullName: EditText
     private lateinit var rgGender: RadioGroup
     private lateinit var spCourse: Spinner
-    private lateinit var sbDifficulty: SeekBar
-    private lateinit var tvDifficulty: TextView
     private lateinit var cvBirthDate: CalendarView
     private lateinit var ivZodiac: ImageView
     private lateinit var tvResult: TextView
 
-    private val difficulties = listOf("Легкий", "Средний", "Сложный", "Экстрим")
     private var birthDay = 5
     private var birthMonth = 11
     private var birthYear = 2002
+
+    /** Блокирует обработчик календаря при программной установке даты. */
+    private var updatingBirthDate = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,8 +54,6 @@ class PlayerRegistrationFragment : Fragment() {
         etFullName = view.findViewById(R.id.etFullName)
         rgGender = view.findViewById(R.id.rgGender)
         spCourse = view.findViewById(R.id.spCourse)
-        sbDifficulty = view.findViewById(R.id.sbDifficulty)
-        tvDifficulty = view.findViewById(R.id.tvDifficulty)
         cvBirthDate = view.findViewById(R.id.cvBirthDate)
         ivZodiac = view.findViewById(R.id.ivZodiac)
         tvResult = view.findViewById(R.id.tvResult)
@@ -59,23 +63,12 @@ class PlayerRegistrationFragment : Fragment() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spCourse.adapter = adapter
 
-        sbDifficulty.max = difficulties.size - 1
-        sbDifficulty.progress = 1
-        tvDifficulty.text = difficulties[1]
-        sbDifficulty.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                tvDifficulty.text = difficulties[progress]
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar) {}
-        })
-
         val calendar = Calendar.getInstance().apply {
             set(2005, Calendar.JANUARY, 1)
         }
         cvBirthDate.date = calendar.timeInMillis
         cvBirthDate.setOnDateChangeListener { _, year, month, dayOfMonth ->
+            if (updatingBirthDate) return@setOnDateChangeListener
             birthYear = year
             birthMonth = month
             birthDay = dayOfMonth
@@ -101,12 +94,33 @@ class PlayerRegistrationFragment : Fragment() {
         }
 
         val course = spCourse.selectedItemPosition + 1
-        val difficulty = difficulties[sbDifficulty.progress]
+        val difficulty = GameSettingsStore.current.difficulty
         val birthDate = "%02d.%02d.%04d".format(birthDay, birthMonth + 1, birthYear)
         val zodiac = ZodiacSign.from(birthDay, birthMonth + 1)
-        val player = Player(fullName, gender, course, difficulty, birthDate, zodiac)
+        val player = PlayerEntity(
+            fullName = fullName,
+            gender = gender,
+            course = course,
+            difficulty = difficulty,
+            birthDate = birthDate,
+            zodiacSign = zodiac.name
+        )
 
-        tvResult.text = player.toString()
-        ivZodiac.setImageResource(zodiac.imageRes)
+        viewLifecycleOwner.lifecycleScope.launch {
+            val dao = AppDatabase.get(requireContext()).playerDao()
+            val id = dao.insert(player)
+            val saved = player.copy(id = id)
+            PlayerSession.current = saved
+            PlayerSession.persist(requireContext(), saved)
+
+            val domainPlayer = Player(fullName, gender, course, difficulty, birthDate, zodiac)
+            tvResult.text = domainPlayer.toString()
+            ivZodiac.setImageResource(zodiac.imageRes)
+            Toast.makeText(
+                requireContext(),
+                "Игрок ${saved.fullName} зарегистрирован",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 }

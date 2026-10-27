@@ -13,7 +13,6 @@ import io.allitov.bugs.R
 
 class GameSettingsFragment : Fragment() {
 
-    private val speeds = listOf(0.5F, 1.0F, 1.5F, 2.0F, 3.0F)
     private var gameSettings = GameSettingsStore.current
 
     override fun onCreateView(
@@ -27,11 +26,14 @@ class GameSettingsFragment : Fragment() {
 
         val speedSeekBar = view.findViewById<SeekBar>(R.id.sbGameSpeed)
         val speedText = view.findViewById<TextView>(R.id.tvGameSpeed)
-        speedSeekBar.progress = speeds.indexOf(gameSettings.speed)
+        val difficultyText = view.findViewById<TextView>(R.id.tvDifficulty)
+        speedSeekBar.progress = GameSettings.SPEEDS.indexOf(gameSettings.speed)
         speedText.text = formatSpeed(gameSettings.speed)
+        difficultyText.text = formatDifficulty(gameSettings)
         speedSeekBar.setOnSeekBarChangeListener(simpleSeekBarListener { progress ->
-            updateSettings { it.copy(speed = speeds[progress]) }
+            updateSettings { it.copy(speed = GameSettings.SPEEDS[progress]) }
             speedText.text = formatSpeed(gameSettings.speed)
+            difficultyText.text = formatDifficulty(gameSettings)
         })
 
         val maxBugsSeekBar = view.findViewById<SeekBar>(R.id.sbMaxBugs)
@@ -79,6 +81,9 @@ class GameSettingsFragment : Fragment() {
 
     private fun formatSpeed(speed: Float): String = "${speed}×"
 
+    private fun formatDifficulty(settings: GameSettings): String =
+        getString(R.string.settings_difficulty_value, settings.difficulty)
+
     private fun formatDuration(seconds: Int): String {
         val minutes = seconds / 60
         val remainingSeconds = seconds % 60
@@ -90,6 +95,6 @@ class GameSettingsFragment : Fragment() {
     }
 
     private companion object {
-        const val ROUND_DURATION_STEP = 15
+        const val ROUND_DURATION_STEP = GameSettings.ROUND_DURATION_STEP
     }
 }
