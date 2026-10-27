@@ -8,6 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="game_grass">#DDEBC8</color>
+    <color name="spinner_border">#FFBDBDBD</color>
+    <color name="spinner_error">#FFD32F2F</color>
     <color name="game_field">#D6E8BE</color>
     <color name="results_card">#FFF8E1</color>
 </resources>
