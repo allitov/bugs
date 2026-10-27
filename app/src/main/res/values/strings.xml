@@ -7,9 +7,24 @@
     <string name="game_title">Жуки</string>
     <string name="menu_subtitle">Дави жуков и набирай очки!</string>
     <string name="menu_play">Начать игру</string>
+    <string name="menu_player">Игрок</string>
+    <string name="menu_records">Рекорды</string>
     <string name="menu_rules">Правила</string>
     <string name="menu_authors">Авторы</string>
     <string name="menu_settings">Настройки</string>
+    <string name="menu_select_player_hint">Выберите игрока…</string>
+    <string name="menu_pick_player">Выбрать игрока</string>
+    <string name="menu_register_new_player">+ Зарегистрировать нового игрока</string>
+    <string name="menu_select_player_required">Сначала выберите игрока</string>
+    <string name="sheet_player_title">Выберите игрока</string>
+    <string name="sheet_players_empty">Пока нет зарегистрированных игроков</string>
+    <string name="item_player_details">Курс %1$d</string>
+    <string name="delete_player_title">Удалить игрока?</string>
+    <string name="delete_player_message">Профиль игрока %1$s будет удалён вместе с его рекордами.</string>
+    <string name="action_delete">Удалить</string>
+    <string name="action_cancel">Отмена</string>
+    <string name="player_deleted">Игрок %1$s удалён</string>
+    <string name="settings_difficulty_value">Сложность: %1$s</string>
 
     <!-- Игровой экран -->
     <string name="score_value">Очки: %1$d</string>
@@ -19,6 +34,7 @@
 
     <!-- Итоги раунда -->
     <string name="results_title">Раунд завершён!</string>
+    <string name="results_player">Игрок: %1$s</string>
     <string name="results_score">Очки: %1$d</string>
     <string name="results_hits">Попадания: %1$d</string>
     <string name="results_misses">Промахи: %1$d</string>
@@ -28,4 +44,8 @@
     <string name="results_accuracy_default">Точность: 0%</string>
     <string name="results_replay">Играть снова</string>
     <string name="results_to_menu">В меню</string>
+
+    <!-- Рекорды -->
+    <string name="records_title">Рекорды</string>
+    <string name="records_empty">Пока нет рекордов. Зарегистрируйте игрока и сыграйте раунд!</string>
 </resources>
