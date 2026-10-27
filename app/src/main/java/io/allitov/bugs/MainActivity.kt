@@ -11,10 +11,11 @@ import io.allitov.bugs.fragments.AuthorsFragment
 import io.allitov.bugs.fragments.GameRulesFragment
 import io.allitov.bugs.fragments.GameSettingsFragment
 import io.allitov.bugs.fragments.PlayerRegistrationFragment
+import io.allitov.bugs.fragments.RecordsFragment
 
 class MainActivity : AppCompatActivity() {
 
-    private val tabs = listOf("Игрок", "Правила", "Авторы", "Настройки")
+    private val tabs = listOf("Игрок", "Рекорды", "Правила", "Авторы", "Настройки")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,9 +30,10 @@ class MainActivity : AppCompatActivity() {
             override fun getItemCount(): Int = tabs.size
 
             override fun createFragment(position: Int): Fragment = when (position) {
-                0 -> PlayerRegistrationFragment()
-                1 -> GameRulesFragment()
-                2 -> AuthorsFragment()
+                PAGE_PLAYER -> PlayerRegistrationFragment()
+                PAGE_RECORDS -> RecordsFragment()
+                PAGE_RULES -> GameRulesFragment()
+                PAGE_AUTHORS -> AuthorsFragment()
                 else -> GameSettingsFragment()
             }
         }
@@ -45,8 +47,9 @@ class MainActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_SELECTED_PAGE = "io.allitov.bugs.extra.SELECTED_PAGE"
         const val PAGE_PLAYER = 0
-        const val PAGE_RULES = 1
-        const val PAGE_AUTHORS = 2
-        const val PAGE_SETTINGS = 3
+        const val PAGE_RECORDS = 1
+        const val PAGE_RULES = 2
+        const val PAGE_AUTHORS = 3
+        const val PAGE_SETTINGS = 4
     }
 }
