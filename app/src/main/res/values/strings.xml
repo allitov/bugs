@@ -31,6 +31,7 @@
     <string name="time_left_value">Осталось: %1$d сек</string>
     <string name="default_score">Очки: 0</string>
     <string name="default_time_left">Осталось: –</string>
+    <string name="tilt_bonus_active">Наклон активен: %1$d сек — наклоняйте телефон!</string>
 
     <!-- Итоги раунда -->
     <string name="results_title">Раунд завершён!</string>
