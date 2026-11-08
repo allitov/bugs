@@ -34,4 +34,20 @@
             android:text="@string/default_time_left"
             android:textSize="18sp" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvTiltBonus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/bg_results_card"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:textColor="#3E2723"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
 </FrameLayout>

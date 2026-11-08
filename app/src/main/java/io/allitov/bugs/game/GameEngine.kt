@@ -1,5 +1,7 @@
 package io.allitov.bugs.game
 
+import io.allitov.bugs.R
+import io.allitov.bugs.model.Bonus
 import io.allitov.bugs.model.Bug
 import io.allitov.bugs.model.BugType
 import io.allitov.bugs.model.GameSettings
@@ -12,6 +14,11 @@ import kotlin.random.Random
 /**
  * Логика раунда игры «Жуки»: создание и перемещение жуков, обработка касаний,
  * подсчёт очков и статистики.
+ *
+ * Помимо жуков движок ведёт бонус наклона: раз в [TILT_BONUS_INTERVAL_SECONDS]
+ * секунд на поле появляется бонус, при нажатии на который на
+ * [TILT_EFFECT_DURATION_SECONDS] секунд включается режим наклона — жуки
+ * скатываются в наклонённую сторону экрана (см. [setTilt]).
  *
  * Все вычисления выполняются в логической системе координат игрового поля:
  * ширина поля всегда равна [LOGICAL_FIELD_WIDTH] условных единиц, а высота
@@ -30,9 +37,19 @@ class GameEngine(
         /** Штраф за промах в очках. */
         const val MISS_PENALTY = 10
 
+        /** Интервал появления бонуса наклона, в секундах. */
+        const val TILT_BONUS_INTERVAL_SECONDS = 15
+
+        /** Длительность действия бонуса наклона после нажатия, в секундах. */
+        const val TILT_EFFECT_DURATION_SECONDS = 10
+
         private const val SPAWN_TICK_SECONDS = 0.8f
         private const val MAX_DELTA_SECONDS = 0.1f
         private const val INITIAL_BUGS = 5
+        private const val TILT_BONUS_SIZE = 7f
+
+        /** Скорость скатывания жуков при полном наклоне телефона, ед/с. */
+        private const val TILT_FORCE = 65f
     }
 
     var logicalWidth = LOGICAL_FIELD_WIDTH
@@ -46,6 +63,25 @@ class GameEngine(
     /** Жуки, находящиеся на поле. */
     val bugs: List<Bug>
         get() = activeBugs
+
+    private var nextBonusId = 1L
+
+    /** Бонус наклона, лежащий на поле, или null, если бонуса сейчас нет. */
+    var tiltBonus: Bonus? = null
+        private set
+
+    private var tiltBonusCooldown = TILT_BONUS_INTERVAL_SECONDS.toFloat()
+    private var tiltEffectRemainingSeconds = 0f
+    private var tiltX = 0f
+    private var tiltY = 0f
+
+    /** Активен ли сейчас режим учёта наклона телефона. */
+    val isTiltActive: Boolean
+        get() = tiltEffectRemainingSeconds > 0f
+
+    /** Сколько целых секунд осталось действовать режиму наклона. */
+    val tiltBonusSecondsLeft: Int
+        get() = ceil(tiltEffectRemainingSeconds).toInt()
 
     var score = 0
         private set
@@ -119,15 +155,82 @@ class GameEngine(
             rareBugCooldown = settings.bonusIntervalSeconds.toFloat()
             spawnBug(rare = true)
         }
+
+        updateTiltBonus(delta)
+    }
+
+    /**
+     * Сохраняет текущий наклон телефона в экранных координатах (см. [TiltSensor]).
+     * Учитывается в движении жуков, только пока активен режим наклона.
+     */
+    fun setTilt(x: Float, y: Float) {
+        tiltX = x
+        tiltY = y
+    }
+
+    private fun updateTiltBonus(delta: Float) {
+        if (isTiltActive) {
+            tiltEffectRemainingSeconds = (tiltEffectRemainingSeconds - delta).coerceAtLeast(0f)
+            return
+        }
+        tiltBonusCooldown -= delta
+        if (tiltBonusCooldown <= 0f) {
+            tiltBonusCooldown = TILT_BONUS_INTERVAL_SECONDS.toFloat()
+            spawnTiltBonus()
+        }
+    }
+
+    private fun spawnTiltBonus() {
+        val margin = TILT_BONUS_SIZE + 2f
+        val x = if (margin * 2 >= logicalWidth) {
+            logicalWidth / 2f
+        } else {
+            margin + random.nextFloat() * (logicalWidth - margin * 2)
+        }
+        val y = if (margin * 2 >= logicalHeight) {
+            logicalHeight / 2f
+        } else {
+            margin + random.nextFloat() * (logicalHeight - margin * 2)
+        }
+        tiltBonus = Bonus(
+            id = nextBonusId++,
+            x = x,
+            y = y,
+            size = TILT_BONUS_SIZE,
+            imageRes = R.drawable.bonus_tilt
+        )
+    }
+
+    /** Результат касания игрока по полю. */
+    enum class TapResult {
+        /** Промах мимо жуков и бонусов. */
+        MISS,
+
+        /** Попадание в жука. */
+        BUG,
+
+        /** Нажатие на бонус наклона: режим наклона активирован. */
+        TILT_BONUS
     }
 
     /**
      * Обрабатывает касание игрока в логических координатах поля.
-     * Попадание в жука начисляет его стоимость в очках, промах — штраф [MISS_PENALTY].
+     * Нажатие на бонус наклона включает режим наклона, попадание в жука
+     * начисляет его стоимость в очках, промах — штраф [MISS_PENALTY].
      *
-     * @return true, если касание попало в жука, false — это промах
+     * @return что произошло: промах, попадание в жука или взятый бонус
      */
-    fun onTap(x: Float, y: Float): Boolean {
+    fun onTap(x: Float, y: Float): TapResult {
+        val bonus = tiltBonus
+        if (bonus != null) {
+            val dx = x - bonus.x
+            val dy = y - bonus.y
+            if (dx * dx + dy * dy <= bonus.size * bonus.size) {
+                tiltBonus = null
+                tiltEffectRemainingSeconds = TILT_EFFECT_DURATION_SECONDS.toFloat()
+                return TapResult.TILT_BONUS
+            }
+        }
         val bug = activeBugs.lastOrNull { bug ->
             val dx = x - bug.x
             val dy = y - bug.y
@@ -136,19 +239,23 @@ class GameEngine(
         if (bug == null) {
             misses++
             score -= MISS_PENALTY
-            return false
+            return TapResult.MISS
         }
         activeBugs.remove(bug)
         hits++
         score += bug.points
-        return true
+        return TapResult.BUG
     }
 
     private fun moveBugs(delta: Float) {
+        // В режиме наклона жуки скатываются в наклонённую сторону экрана
+        val tiltDx = tiltX * delta
+        val tiltDy = tiltY * delta
+        val tiltForce = if (isTiltActive) TILT_FORCE else 0f
         activeBugs.forEach { bug ->
             val direction = Math.toRadians(bug.angle.toDouble())
-            bug.x += (sin(direction) * bug.speed * delta).toFloat()
-            bug.y -= (cos(direction) * bug.speed * delta).toFloat()
+            bug.x += (sin(direction) * bug.speed * delta).toFloat() + tiltDx * tiltForce
+            bug.y -= (cos(direction) * bug.speed * delta).toFloat() + tiltDy * tiltForce
             bounceOffWalls(bug)
         }
     }
