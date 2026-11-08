@@ -11,6 +11,7 @@ import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
 import io.allitov.bugs.game.GameEngine
 import io.allitov.bugs.game.GameEngine.TapResult
+import io.allitov.bugs.game.TiltBonusSoundPlayer
 import io.allitov.bugs.game.TiltSensor
 import io.allitov.bugs.model.Bonus
 import io.allitov.bugs.model.Bug
@@ -51,6 +52,8 @@ class GameFieldView @JvmOverloads constructor(
         onTiltChanged = { x, y -> engine.setTilt(x, y) }
     }
 
+    private val tiltSounds = TiltBonusSoundPlayer(context)
+
     private var running = false
     private var roundFinishedNotified = false
     private var lastFrameTimeNanos = 0L
@@ -68,6 +71,12 @@ class GameFieldView @JvmOverloads constructor(
 
             engine.update(deltaSeconds)
             effects.removeAll { now - it.startedAtNanos > EFFECT_DURATION_NANOS }
+            // Звук действия бонуса: играет, пока активен режим наклона
+            if (engine.isTiltActive) {
+                tiltSounds.startLoop()
+            } else {
+                tiltSounds.stopLoop()
+            }
             onStateChanged?.invoke(
                 engine.score,
                 engine.timeLeftSeconds,
@@ -98,7 +107,13 @@ class GameFieldView @JvmOverloads constructor(
     fun pause() {
         running = false
         tiltSensor.stop()
+        tiltSounds.stopLoop()
         removeCallbacks(frameRunnable)
+    }
+
+    override fun onDetachedFromWindow() {
+        tiltSounds.release()
+        super.onDetachedFromWindow()
     }
 
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
@@ -210,9 +225,14 @@ class GameFieldView @JvmOverloads constructor(
         if (engine.isFinished || width == 0 || height == 0) return
         val logicalX = pixelX * engine.logicalWidth / width
         val logicalY = pixelY * engine.logicalHeight / height
-        val color = when (engine.onTap(logicalX, logicalY)) {
+        val color = when (val result = engine.onTap(logicalX, logicalY)) {
+            TapResult.TILT_BONUS -> {
+                // Сигнал подбора бонуса и запуск «ветра» на время действия
+                tiltSounds.playPickup()
+                tiltSounds.startLoop()
+                BONUS_COLOR
+            }
             TapResult.BUG -> HIT_COLOR
-            TapResult.TILT_BONUS -> BONUS_COLOR
             TapResult.MISS -> MISS_COLOR
         }
         effects += TapEffect(x = logicalX, y = logicalY, color = color, startedAtNanos = System.nanoTime())
