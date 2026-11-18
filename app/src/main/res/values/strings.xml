@@ -49,4 +49,10 @@
     <!-- Рекорды -->
     <string name="records_title">Рекорды</string>
     <string name="records_empty">Пока нет рекордов. Зарегистрируйте игрока и сыграйте раунд!</string>
+
+    <!-- Виджет курса золота ЦБ -->
+    <string name="widget_gold_label">Золото ЦБ</string>
+    <string name="widget_gold_price">%1$s ₽/г</string>
+    <string name="widget_gold_no_data">нет данных</string>
+    <string name="widget_gold_description">Виджет-шар с курсом золота ЦБ РФ</string>
 </resources>

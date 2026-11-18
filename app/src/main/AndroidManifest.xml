@@ -37,6 +37,19 @@
             android:exported="false"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize" />
+
+        <!-- Виджет «шар» на рабочем столе: учётный курс золота ЦБ РФ -->
+        <receiver
+            android:name=".widget.GoldRateWidgetProvider"
+            android:exported="false"
+            android:label="@string/widget_gold_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/gold_rate_widget_info" />
+        </receiver>
     </application>
 
 </manifest>

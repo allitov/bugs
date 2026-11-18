@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Фон виджета «шар»: золотая сфера с бликом в левой верхней части -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <size
+        android:width="120dp"
+        android:height="120dp" />
+    <gradient
+        android:centerX="0.35"
+        android:centerY="0.30"
+        android:endColor="#8F5E06"
+        android:gradientRadius="105%"
+        android:startColor="#FFF8D0"
+        android:centerColor="#F5B914"
+        android:type="radial" />
+    <stroke
+        android:width="1.5dp"
+        android:color="#7A5200" />
+</shape>
