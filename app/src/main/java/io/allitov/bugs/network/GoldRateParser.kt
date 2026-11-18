@@ -20,8 +20,8 @@ object GoldRateParser {
 
     /**
      * Разбирает XML с котировками металлов и возвращает курс золота на последнюю
-     * дату в документе. Если записей о золоте нет или документ повреждён,
-     * возвращает null.
+     * дату в документе. Если записей о золоте нет или документ повреждён
+     * (например, сервер вернул HTML-страницу вместо XML), возвращает null.
      */
     fun parse(xml: String): GoldRate? {
         val parser = Xml.newPullParser()
@@ -46,8 +46,10 @@ object GoldRateParser {
                     }
 
                     XmlPullParser.END_TAG -> if (parser.name == RECORD_TAG) {
+                        // Даты в ответе ЦБ в формате дд.ММ.гггг — для выбора последней
+                        // записи приводим их к сравнимому виду ггггММдд
                         if (code == GOLD_METAL_CODE && buyPrice != null &&
-                            (latest == null || (date ?: "") >= (latest.date ?: ""))
+                            (latest == null || dateKey(date) >= dateKey(latest.date))
                         ) {
                             latest = GoldRate(pricePerGram = buyPrice, date = date)
                         }
@@ -63,6 +65,17 @@ object GoldRateParser {
             null
         } catch (e: IOException) {
             null
+        }
+    }
+
+    /** Ключ сравнения дат ЦБ: «20.10.2026» превращает в «20261020», неожиданный формат — в «». */
+    private fun dateKey(date: String?): String {
+        if (date == null) return ""
+        val parts = date.split('.')
+        return if (parts.size == 3) {
+            parts[2] + parts[1].padStart(2, '0') + parts[0].padStart(2, '0')
+        } else {
+            ""
         }
     }
 
