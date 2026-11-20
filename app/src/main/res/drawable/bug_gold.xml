@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Золотой таракан: появляется каждые 20 секунд, стоимость пропорциональна курсу золота ЦБ -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+
+    <!-- Лапки -->
+    <path
+        android:strokeColor="#A67C00"
+        android:strokeWidth="7"
+        android:strokeLineCap="round"
+        android:pathData="M56,82 L18,58 M48,112 L10,108 M54,144 L22,170 M144,82 L182,58 M152,112 L190,108 M146,144 L178,170" />
+    <!-- Усики -->
+    <path
+        android:strokeColor="#A67C00"
+        android:strokeWidth="6"
+        android:strokeLineCap="round"
+        android:pathData="M88,30 C76,14 58,6 40,10 M112,30 C124,14 142,6 160,10" />
+    <!-- Голова -->
+    <path
+        android:fillColor="#E6A817"
+        android:pathData="M76,46 a24,24 0 1 0 48,0 a24,24 0 1 0 -48,0 z" />
+    <!-- Глаза -->
+    <path
+        android:fillColor="#4A148C"
+        android:pathData="M85,40 a5,5 0 1 0 10,0 a5,5 0 1 0 -10,0 z M105,40 a5,5 0 1 0 10,0 a5,5 0 1 0 -10,0 z" />
+    <!-- Тело таракана: вытянутый овал с золотой окантовкой -->
+    <path
+        android:fillColor="#FFC400"
+        android:strokeColor="#B8860B"
+        android:strokeWidth="5"
+        android:pathData="M44,118 a56,68 0 1 0 112,0 a56,68 0 1 0 -112,0 z" />
+    <!-- Линия крыльев -->
+    <path
+        android:strokeColor="#D69A00"
+        android:strokeWidth="4"
+        android:pathData="M100,58 L100,188" />
+    <!-- Блики на крыльях -->
+    <path
+        android:fillColor="#FFF9C4"
+        android:pathData="M60,86 a12,12 0 1 0 24,0 a12,12 0 1 0 -24,0 z" />
+    <path
+        android:fillColor="#FFECB3"
+        android:pathData="M116,120 a10,10 0 1 0 20,0 a10,10 0 1 0 -20,0 z M84,152 a8,8 0 1 0 16,0 a8,8 0 1 0 -16,0 z" />
+    <!-- Блёстки -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.95"
+        android:pathData="M160,24 L166,42 L184,48 L166,54 L160,72 L154,54 L136,48 L154,42 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.85"
+        android:pathData="M28,36 L32,46 L42,50 L32,54 L28,64 L24,54 L14,50 L24,46 Z" />
+</vector>

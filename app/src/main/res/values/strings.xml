@@ -49,4 +49,19 @@
     <!-- Рекорды -->
     <string name="records_title">Рекорды</string>
     <string name="records_empty">Пока нет рекордов. Зарегистрируйте игрока и сыграйте раунд!</string>
+
+    <!-- Золотой таракан и курс золота ЦБ -->
+    <string name="gold_rate_toast">Курс золота ЦБ: %1$s ₽/г</string>
+    <plurals name="gold_bug_points">
+        <item quantity="one">Золотой таракан: %1$d очко</item>
+        <item quantity="few">Золотой таракан: %1$d очка</item>
+        <item quantity="many">Золотой таракан: %1$d очков</item>
+        <item quantity="other">Золотой таракан: %1$d очков</item>
+    </plurals>
+
+    <!-- Виджет курса золота ЦБ -->
+    <string name="widget_gold_label">Золото ЦБ</string>
+    <string name="widget_gold_price">%1$s ₽/г</string>
+    <string name="widget_gold_no_data">нет данных</string>
+    <string name="widget_gold_description">Виджет-шар с курсом золота ЦБ РФ</string>
 </resources>

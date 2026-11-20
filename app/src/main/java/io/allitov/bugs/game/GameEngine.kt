@@ -20,6 +20,10 @@ import kotlin.random.Random
  * [TILT_EFFECT_DURATION_SECONDS] секунд включается режим наклона — жуки
  * скатываются в наклонённую сторону экрана (см. [setTilt]).
  *
+ * Раз в [GOLD_BUG_INTERVAL_SECONDS] секунд на поле выбегает золотой таракан:
+ * его стоимость пропорциональна учётному курсу золота ЦБ РФ, который игра
+ * загружает через Retrofit (см. [setGoldPricePerGram]).
+ *
  * Все вычисления выполняются в логической системе координат игрового поля:
  * ширина поля всегда равна [LOGICAL_FIELD_WIDTH] условных единиц, а высота
  * подбирается под соотношение сторон экрана, поэтому геометрия игры одинакова
@@ -42,6 +46,23 @@ class GameEngine(
 
         /** Длительность действия бонуса наклона после нажатия, в секундах. */
         const val TILT_EFFECT_DURATION_SECONDS = 10
+
+        /** Интервал появления золотого таракана, в секундах. */
+        const val GOLD_BUG_INTERVAL_SECONDS = 20
+
+        /** Цена золота по умолчанию, ₽ за грамм: действует, пока курс не загружен из ЦБ. */
+        const val DEFAULT_GOLD_PRICE_PER_GRAM = 8000.0
+
+        /** Делитель курса золота: очки за таракана = цена за грамм / [GOLD_POINTS_DIVISOR]. */
+        const val GOLD_POINTS_DIVISOR = 100
+
+        /**
+         * Очки за золотого таракана при курсе золота [pricePerGram]: пропорциональны
+         * курсу — цена за грамм, делённая на [GOLD_POINTS_DIVISOR] (например,
+         * при курсе 8500 ₽/г таракан стоит 85 очков).
+         */
+        fun goldBugPointsFor(pricePerGram: Double): Int =
+            ceil(pricePerGram / GOLD_POINTS_DIVISOR).toInt().coerceAtLeast(1)
 
         private const val SPAWN_TICK_SECONDS = 0.8f
         private const val MAX_DELTA_SECONDS = 0.1f
@@ -74,6 +95,10 @@ class GameEngine(
     private var tiltEffectRemainingSeconds = 0f
     private var tiltX = 0f
     private var tiltY = 0f
+
+    /** Текущий курс золота ЦБ, рублей за грамм; влияет на очки за золотого таракана. */
+    private var goldPricePerGram = DEFAULT_GOLD_PRICE_PER_GRAM
+    private var goldBugCooldown = GOLD_BUG_INTERVAL_SECONDS.toFloat()
 
     /** Активен ли сейчас режим учёта наклона телефона. */
     val isTiltActive: Boolean
@@ -129,7 +154,7 @@ class GameEngine(
         if (started) return
         started = true
         rareBugCooldown = settings.bonusIntervalSeconds.toFloat()
-        repeat(settings.maxBugs.coerceAtMost(INITIAL_BUGS)) { spawnBug(rare = false) }
+        repeat(settings.maxBugs.coerceAtMost(INITIAL_BUGS)) { spawnBug(BugType.random(random)) }
     }
 
     /**
@@ -148,12 +173,19 @@ class GameEngine(
         spawnCooldown -= delta
         if (spawnCooldown <= 0f && activeBugs.size < settings.maxBugs) {
             spawnCooldown = SPAWN_TICK_SECONDS
-            spawnBug(rare = false)
+            spawnBug(BugType.random(random))
         }
         rareBugCooldown -= delta
         if (rareBugCooldown <= 0f) {
             rareBugCooldown = settings.bonusIntervalSeconds.toFloat()
-            spawnBug(rare = true)
+            spawnBug(BugType.RARE)
+        }
+
+        // Золотой таракан: строго каждые GOLD_BUG_INTERVAL_SECONDS секунд
+        goldBugCooldown -= delta
+        if (goldBugCooldown <= 0f) {
+            goldBugCooldown = GOLD_BUG_INTERVAL_SECONDS.toFloat()
+            spawnBug(BugType.GOLD)
         }
 
         updateTiltBonus(delta)
@@ -166,6 +198,15 @@ class GameEngine(
     fun setTilt(x: Float, y: Float) {
         tiltX = x
         tiltY = y
+    }
+
+    /**
+     * Задаёт учётный курс золота ЦБ (рублей за грамм), загруженный через Retrofit
+     * в [io.allitov.bugs.data.GoldRateRepository]. Стоимость следующих золотых
+     * тараканов пропорциональна этому курсу.
+     */
+    fun setGoldPricePerGram(pricePerGram: Double) {
+        if (pricePerGram > 0.0) goldPricePerGram = pricePerGram
     }
 
     private fun updateTiltBonus(delta: Float) {
@@ -293,8 +334,7 @@ class GameEngine(
         }
     }
 
-    private fun spawnBug(rare: Boolean) {
-        val type = if (rare) BugType.RARE else BugType.random(random)
+    private fun spawnBug(type: BugType) {
         val margin = type.size + 2f
         val x = if (margin * 2 >= logicalWidth) {
             logicalWidth / 2f
@@ -314,8 +354,11 @@ class GameEngine(
             angle = random.nextFloat() * 360f,
             speed = type.speed * settings.speed,
             size = type.size,
-            points = type.points,
+            points = if (type == BugType.GOLD) goldBugPoints() else type.points,
             imageRes = type.imageRes
         )
     }
+
+    /** Очки за золотого таракана при текущем курсе [goldPricePerGram]. */
+    private fun goldBugPoints(): Int = goldBugPointsFor(goldPricePerGram)
 }

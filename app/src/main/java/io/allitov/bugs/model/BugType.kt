@@ -28,7 +28,12 @@ enum class BugType(
 
     // Редкий жук не участвует в обычном спавне (вес 0): он выходит на поле
     // только по таймеру бонусов — раз в bonusIntervalSeconds (см. GameEngine).
-    RARE("Редкий жук", speed = 18f, size = 5f, points = 50, imageRes = R.drawable.bug_rare, spawnWeight = 0);
+    RARE("Редкий жук", speed = 18f, size = 5f, points = 50, imageRes = R.drawable.bug_rare, spawnWeight = 0),
+
+    // Золотой таракан не участвует в обычном спавне (вес 0): он выходит на поле
+    // раз в GOLD_BUG_INTERVAL_SECONDS секунд (см. GameEngine), а его стоимость
+    // пропорциональна курсу золота ЦБ и вычисляется при создании (GameEngine.goldBugPointsFor).
+    GOLD("Золотой таракан", speed = 22f, size = 7f, points = 0, imageRes = R.drawable.bug_gold, spawnWeight = 0);
 
     companion object {
 

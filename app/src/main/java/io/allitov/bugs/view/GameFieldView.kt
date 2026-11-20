@@ -44,6 +44,11 @@ class GameFieldView @JvmOverloads constructor(
     val currentStats: GameStats
         get() = engine.toStats()
 
+    /** Задаёт курс золота ЦБ (рублей за грамм): от него зависят очки за золотого таракана. */
+    fun setGoldPricePerGram(pricePerGram: Double) {
+        engine.setGoldPricePerGram(pricePerGram)
+    }
+
     private val drawables = mutableMapOf<Int, Drawable>()
     private val effects = mutableListOf<TapEffect>()
     private val effectPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.STROKE }
